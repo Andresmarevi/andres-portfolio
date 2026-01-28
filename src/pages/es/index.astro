@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import ProjectCard from '../components/ProjectCard.astro';
-import { getLangFromUrl, getTranslations, getLocalizedPath } from '../i18n/utils';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getLangFromUrl, getTranslations, getLocalizedPath } from '../../i18n/utils';
 import { Image } from 'astro:assets';
-import profileImage from '../assets/profile.jpg';
+import profileImage from '../../assets/profile.jpg';
 
 const lang = getLangFromUrl(Astro.url);
 const t = getTranslations(lang);

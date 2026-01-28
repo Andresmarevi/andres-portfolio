@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+---
+
+<a href={`/projects/${project.id}/`} class="group">
+	<div class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+		<!-- Image -->
+		{
+			project.data.heroImage && (
+				<div class="relative overflow-hidden h-48 bg-gray-200 dark:bg-gray-700">
+					<img
+						src={typeof project.data.heroImage === 'string' ? project.data.heroImage : project.data.heroImage.src}
+						alt={project.data.title}
+						class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+					/>
+				</div>
+			)
+		}
+
+		<!-- Content -->
+		<div class="p-6">
+			<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+				{project.data.title}
+			</h3>
+
+			<p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+				{project.data.description}
+			</p>
+
+			<!-- Tech Stack -->
+			{
+				project.data.tech && project.data.tech.length > 0 && (
+					<div class="flex flex-wrap gap-2 mb-4">
+						{project.data.tech.slice(0, 3).map((tech) => (
+							<span class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
+								{tech}
+							</span>
+						))}
+					</div>
+				)
+			}
+
+			<!-- View Details -->
+			<div class="text-blue-600 dark:text-blue-400 font-semibold text-sm group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+				View Details →
+			</div>
+		</div>
+	</div>
+</a>

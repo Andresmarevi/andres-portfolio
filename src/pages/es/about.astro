@@ -1,6 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getLangFromUrl, getTranslations, getLocalizedPath } from '../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLangFromUrl, getTranslations, getLocalizedPath } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = getTranslations(lang);
@@ -98,4 +98,3 @@ const t = getTranslations(lang);
 		</div>
 	</section>
 </BaseLayout>
-

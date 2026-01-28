@@ -1,0 +1,238 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+
+type Props = CollectionEntry<'projects'>['data'];
+
+const { title, description, pubDate, heroImage, tech, repo, liveUrl } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+	<article class="py-12 px-4 sm:px-6 lg:px-8">
+		<div class="max-w-4xl mx-auto">
+			<!-- Hero Image -->
+			{
+				heroImage && (
+					<div class="mb-8 rounded-lg overflow-hidden">
+						<img
+							src={typeof heroImage === 'string' ? heroImage : heroImage.src}
+							alt={title}
+							class="w-full h-96 object-cover"
+						/>
+					</div>
+				)
+			}
+
+			<!-- Header -->
+			<header class="mb-8">
+				<h1 class="text-4xl md:text-5xl font-bold mb-4">{title}</h1>
+				<p class="text-xl text-gray-600 dark:text-gray-400 mb-4">{description}</p>
+
+				<!-- Meta Info -->
+				<div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-6">
+					{pubDate && <time datetime={pubDate.toISOString()}>{pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>}
+				</div>
+
+				<!-- Tech Stack -->
+				{
+					tech && tech.length > 0 && (
+						<div class="mb-6">
+							<h3 class="text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">Technologies</h3>
+							<div class="flex flex-wrap gap-2">
+								{tech.map((t) => (
+									<span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">
+										{t}
+									</span>
+								))}
+							</div>
+						</div>
+					)
+				}
+
+				<!-- Links -->
+				{
+					(repo || liveUrl) && (
+						<div class="flex flex-wrap gap-4 mb-8">
+							{repo && (
+								<a
+									href={repo}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors font-medium"
+								>
+									View Repository
+									<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+									</svg>
+								</a>
+							)}
+							{liveUrl && (
+								<a
+									href={liveUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="inline-flex items-center px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+								>
+									Live Demo
+									<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+									</svg>
+								</a>
+							)}
+						</div>
+					)
+				}
+
+				<hr class="my-8 border-gray-200 dark:border-gray-700" />
+			</header>
+
+			<!-- Content -->
+			<div class="prose dark:prose-invert max-w-none">
+				<slot />
+			</div>
+
+			<!-- Back Button -->
+			<div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+				<a href="/projects" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+					<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+					</svg>
+					Back to Projects
+				</a>
+			</div>
+		</div>
+	</article>
+</BaseLayout>
+
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			main {
+				width: calc(100% - 2em);
+				max-width: 100%;
+				margin: 0;
+			}
+			.hero-image {
+				width: 100%;
+			}
+			.hero-image img {
+				display: block;
+				margin: 0 auto;
+				border-radius: 12px;
+				box-shadow: var(--box-shadow);
+			}
+			.prose {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 1em;
+				color: rgb(var(--gray-dark));
+			}
+			.title {
+				margin-bottom: 1em;
+				padding: 1em 0;
+				text-align: center;
+				line-height: 1;
+			}
+			.title h1 {
+				margin: 0 0 0.5em 0;
+			}
+			.meta {
+				margin-bottom: 1em;
+				color: rgb(var(--gray));
+				text-align: center;
+			}
+			.tech-stack {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5em;
+				justify-content: center;
+				margin: 1em 0;
+			}
+			.tech-tag {
+				display: inline-block;
+				background: rgb(var(--accent));
+				color: white;
+				padding: 0.25em 0.75em;
+				border-radius: 20px;
+				font-size: 0.85em;
+			}
+			.links {
+				display: flex;
+				gap: 1em;
+				justify-content: center;
+				margin: 1.5em 0;
+				flex-wrap: wrap;
+			}
+			.links a {
+				display: inline-block;
+				padding: 0.5em 1em;
+				background: rgb(var(--accent));
+				color: white;
+				text-decoration: none;
+				border-radius: 6px;
+				transition: opacity 0.2s ease;
+			}
+			.links a:hover {
+				opacity: 0.8;
+			}
+			.last-updated-on {
+				font-style: italic;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="hero-image">
+					{heroImage && <Image width={1020} height={510} src={heroImage} alt={title} />}
+				</div>
+				<div class="prose">
+					<div class="title">
+						<h1>{title}</h1>
+						<div class="meta">
+							{pubDate && <FormattedDate date={pubDate} />}
+							{
+								updatedDate && (
+									<div class="last-updated-on">
+										Last updated on <FormattedDate date={updatedDate} />
+									</div>
+								)
+							}
+						</div>
+						{tech && tech.length > 0 && (
+							<div class="tech-stack">
+								{tech.map((t) => (
+									<span class="tech-tag">{t}</span>
+								))}
+							</div>
+						)}
+						{(repo || liveUrl) && (
+							<div class="links">
+								{repo && (
+									<a href={repo} target="_blank" rel="noopener noreferrer">
+										View Repository
+									</a>
+								)}
+								{liveUrl && (
+									<a href={liveUrl} target="_blank" rel="noopener noreferrer">
+										Live Demo
+									</a>
+								)}
+							</div>
+						)}
+						<hr />
+					</div>
+					<slot />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>

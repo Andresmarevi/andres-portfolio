@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProjectCard from '../../../components/ProjectCard.astro';
+import { getLangFromUrl, getTranslations, getLocalizedPath } from '../../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = getTranslations(lang);
+
+const projects = (await getCollection('projects')).sort(
+	(a, b) => (b.data.pubDate?.valueOf() ?? 0) - (a.data.pubDate?.valueOf() ?? 0),
+);
+---
+
+<BaseLayout title={t.projects.title} description={t.projects.description}>
+	<section class="py-20 px-4 sm:px-6 lg:px-8">
+		<div class="max-w-6xl mx-auto">
+			<!-- Header -->
+			<div class="text-center mb-16">
+				<h1 class="text-5xl font-bold mb-6">{t.projects.heading}</h1>
+				<p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+					{t.projects.subtitle}
+				</p>
+			</div>
+
+			<!-- Projects Grid -->
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{projects.map((project) => (
+					<ProjectCard project={project} />
+				))}
+			</div>
+
+			<!-- Empty State -->
+			{projects.length === 0 && (
+				<div class="text-center py-20">
+					<p class="text-gray-600 dark:text-gray-400 text-lg">
+						{t.projects.empty}
+					</p>
+				</div>
+			)}
+		</div>
+	</section>
+</BaseLayout>
